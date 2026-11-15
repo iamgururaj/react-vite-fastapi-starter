@@ -14,6 +14,7 @@ From the repository root:
 pnpm install
 python -c "from shutil import copyfile; copyfile('frontend/.env.example', 'frontend/.env'); copyfile('backend/.env.example', 'backend/.env')"
 uv sync --directory backend
+pnpm hooks:install
 pnpm migrate
 ```
 
@@ -55,6 +56,8 @@ Production hosting must serve `index.html` as a fallback for frontend routes suc
 Configure `VITE_API_BASE_URL` in `frontend/.env` and `CORS_ORIGINS` in `backend/.env` together. Frontend environment variables are public. Relative database paths resolve from `backend/`, regardless of the invoking directory.
 
 ## Quality checks
+
+The pre-commit hook runs `pnpm format:check` on the whole working tree, including unstaged changes. It requires pnpm and uv. Run `pnpm hooks:install` once per checkout to enable it. If formatting fails, run `pnpm format` successfully before retrying the commit.
 
 Run from the repository root:
 
