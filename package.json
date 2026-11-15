@@ -1,0 +1,17 @@
+{
+	"name": "react-vite-fastapi-starter",
+	"private": true,
+	"scripts": {
+		"dev": "pnpm --filter frontend dev",
+		"build": "pnpm --filter frontend build",
+		"format": "biome format --write . && uv run --directory backend ruff format src",
+		"format:check": "biome format . && uv run --directory backend ruff format --check src",
+		"lint": "biome check frontend package.json biome.json && uv run --directory backend ruff check src",
+		"typecheck": "pnpm --filter frontend typecheck && uv run --directory backend pyright",
+		"dev:backend": "uv run --directory backend uvicorn main:app --app-dir src --reload --reload-dir src --host 127.0.0.1 --port 8000",
+		"migrate": "uv run --directory backend alembic upgrade head"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.6.7"
+	}
+}

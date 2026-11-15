@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.venv/
+__pycache__/
+*.pyc
+*.tsbuildinfo
+.env
+db/
+.cache/
+.uv-cache/
+.python/
+.ruff_cache/
+# Generated TanStack routes
+frontend/src/routeTree.gen.ts
+frontend/.tanstack/

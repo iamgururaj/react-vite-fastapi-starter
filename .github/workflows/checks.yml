@@ -1,0 +1,40 @@
+name: Checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 12.21.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - uses: astral-sh/setup-uv@v10
+        with:
+          python-version: "3.13"
+      - run: pnpm install --frozen-lockfile
+      - run: uv sync --directory backend --locked
+      - name: Generate routes and build frontend
+        run: pnpm build
+      - name: Check formatting
+        if: ${{ !cancelled() }}
+        run: pnpm format:check
+      - name: Check frontend lint
+        if: ${{ !cancelled() }}
+        run: pnpm --dir frontend lint
+      - name: Check backend lint
+        if: ${{ !cancelled() }}
+        run: uv run --directory backend ruff check src
+      - name: Check backend types
+        if: ${{ !cancelled() }}
+        run: uv run --directory backend pyright
